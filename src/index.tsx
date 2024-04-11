@@ -9,6 +9,7 @@ import About from "./component/About/About";
 import { Provider } from "react-redux";
 import store from "./store";
 import Movies from "./component/Movies/Movies";
+import MovieDetails from "./component/MovieDetails/MovieDetails";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: "movies",
         element: <Movies />,
+      },
+      {
+        path: "movies/:movieId",
+        element: <MovieDetails/>,
       },
     ],
   },

@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from './logo.svg';
+import logo from "/Users/valentynadumbrava/Desktop/movies-db/src/cinema-ico.png";
 import './App.css';
 import { Link, Outlet } from 'react-router-dom';
 
@@ -8,7 +8,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <ul>
+        <ul className="App-list">
           <li>
             <Link className="App-link" to="/">
               Home

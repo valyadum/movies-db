@@ -1,13 +1,26 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import {  FilmName, Img} from "./MovieCard.styled";
 
-interface MovieCardsProps{
-    id: number;
-    title: string;
-    overview: string;
-    popularity: number;
+interface MovieCardsProps {
+  adult: boolean;
+  backdrop_path: string;
+  genre_ids: number[];
+  id: number;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
 }
-
+type Props = {
+  movie: MovieCardsProps;
+};
 //       "adult": false,
 //       "backdrop_path": "/kXfqcdQKsToO0OUXHcrrNCHDBzO.jpg",
 //       "genre_ids": [
@@ -26,14 +39,31 @@ interface MovieCardsProps{
 //       "vote_average": 8.7,
 //       "vote_count": 25927
 
-function MovieCard({id, title, overview, popularity}:MovieCardsProps) {
+function MovieCard({ movie }: Props) {
+  const {
+    id,
+    poster_path,
+    title,
+  } = movie;
+const defaultImg =
+  "https://cannamazoo.com/assets/defaults/img/default-product-img.jpg";
   return (
-    <div>
-      <Link to={`/movies/${id}`}>{title}</Link>
-      <div>{popularity}</div>
-      <div>{overview}</div>
-    </div>
+    <>
+      <Link to={`/movies/${id}`} >
+        <Img
+          src={
+            poster_path
+              ? `https://image.tmdb.org/t/p/w500/${poster_path}`
+              : defaultImg
+          }
+          width={200}
+          height={300}
+          alt={title}
+        />
+        <FilmName >{title}</FilmName>
+      </Link>
+    </>
   );
 }
 
-export default MovieCard
+export default MovieCard;
