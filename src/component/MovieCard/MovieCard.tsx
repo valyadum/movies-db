@@ -3,24 +3,28 @@ import { Link } from "react-router-dom";
 import {  FilmName, Img} from "./MovieCard.styled";
 
 interface MovieCardsProps {
-  adult: boolean;
-  backdrop_path: string;
-  genre_ids: number[];
+  // adult: boolean;
+  // backdrop_path: string;
+  // genre_ids: number[];
+  // id: number;
+  // original_language: string;
+  // original_title: string;
+  // overview: string;
+  // popularity: number;
+  // poster_path?: string;
+  // release_date: string;
+  // title: string;
+  // video: boolean;
+  // vote_average: number;
+  // vote_count: number;
   id: number;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  release_date: string;
   title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
+  poster_path: string | undefined;
+  popularity: number;
 }
-type Props = {
-  movie: MovieCardsProps;
-};
+// type Props = {
+//   movie: MovieCardsProps;
+// };
 //       "adult": false,
 //       "backdrop_path": "/kXfqcdQKsToO0OUXHcrrNCHDBzO.jpg",
 //       "genre_ids": [
@@ -39,17 +43,18 @@ type Props = {
 //       "vote_average": 8.7,
 //       "vote_count": 25927
 
-function MovieCard({ movie }: Props) {
-  const {
-    id,
-    poster_path,
-    title,
-  } = movie;
-const defaultImg =
-  "https://cannamazoo.com/assets/defaults/img/default-product-img.jpg";
+function MovieCard({ id, title, poster_path, popularity }: MovieCardsProps) {
+  // const {
+  //   id,
+  //   title,
+  //   image,
+  //   popularity
+  // } = movie;
+  const defaultImg =
+    "https://cannamazoo.com/assets/defaults/img/default-product-img.jpg";
   return (
     <>
-      <Link to={`/movies/${id}`} >
+      <Link to={`/movies/${id}`}>
         <Img
           src={
             poster_path
@@ -60,7 +65,7 @@ const defaultImg =
           height={300}
           alt={title}
         />
-        <FilmName >{title}</FilmName>
+        <FilmName>{title}</FilmName>
       </Link>
     </>
   );
