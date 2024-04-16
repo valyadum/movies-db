@@ -10,42 +10,45 @@ import { Provider } from "react-redux";
 import store from "./store";
 import Movies from "./component/Movies/Movies";
 import MovieDetails from "./component/MovieDetails/MovieDetails";
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: (
-      <BrowserRouter basename="/movie-db">
+
+
+const routes=
+  [
+    {
+      path: "/",
+      element: (
         <Provider store={store}>
           <App />
         </Provider>
-      </BrowserRouter>
-    ),
-    children: [
-      {
-        path: "about",
-        element: <About />,
-      },
-      {
-        path: "movies",
-        element: <Movies />,
-      },
-      {
-        path: "movies/:movieId",
-        element: <MovieDetails />,
-      },
-    ],
-  },
-]);
+      ),
+      children: [
+        {
+          path: "about",
+          element: <About />,
+        },
+        {
+          path: "movies",
+          element: <Movies />,
+        },
+        {
+          path: "movies/:movieId",
+          element: <MovieDetails />,
+        },
+      ],
+    },
+  ];
+  // @ts-ignore
+const router = createBrowserRouter(routes, { basename: "/movie-db"});
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-      <RouterProvider router={router} />
+ {/* <BrowserRouter basename="/movie-db" > */}
+      <RouterProvider router={router}/>
+{/* </BrowserRouter> */}
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
