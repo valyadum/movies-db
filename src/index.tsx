@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { BrowserRouter, createBrowserRouter, RouterProvider } from "react-router-dom";
 import About from "./component/About/About";
 
 import { Provider } from "react-redux";
@@ -14,9 +14,11 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <Provider store={store}>
-        <App />
-      </Provider>
+      <BrowserRouter basename="/movie-db">
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </BrowserRouter>
     ),
     children: [
       {
@@ -29,7 +31,7 @@ const router = createBrowserRouter([
       },
       {
         path: "movies/:movieId",
-        element: <MovieDetails/>,
+        element: <MovieDetails />,
       },
     ],
   },
@@ -39,9 +41,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
- 
       <RouterProvider router={router} />
-
   </React.StrictMode>
 );
 
