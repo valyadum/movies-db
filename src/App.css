@@ -8,7 +8,8 @@
 .App-logo {
   height: 10vmin;
   pointer-events: none;
-  filter: invert(0.8);
+  filter: invert(1);
+  margin: 8px;
 }
 
 /* @media (prefers-reduced-motion: no-preference) {
@@ -19,7 +20,7 @@
 
 .App-header {
   background-color: #181b23;
- height: 15vh;
+  height: 15vh;
   display: flex;
   flex-direction:row;
   align-items: center;
@@ -39,6 +40,7 @@
 .App-main{
   min-height: 98vh;
   color: white;
+    background-color: #0c0f21;
 }
 
 @keyframes App-logo-spin {

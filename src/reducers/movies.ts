@@ -1,4 +1,6 @@
+import { AppThunk } from './../store';
 import { ActionWithPayload, createReducer } from "../redux/utils";
+import {getFavoriteMovies } from '../api/tmdb';
 
 export interface Movie{
     // adult: boolean;
@@ -34,6 +36,22 @@ export const moviesLoaded = (movies: Movie[]) => ({
 export const moviesLoading = () => ({
   type: "movies/loading",
 });
+
+export function fetchMovies():AppThunk<Promise<void>> {
+  return async (dispatch, getState) => {
+     dispatch(moviesLoading());
+     const result = await getFavoriteMovies();
+console.log(result);
+
+     const mappedResult: Movie[]= (result ?? []).map((m) => ({
+       title: m.title,
+       poster_path: m.poster_path,
+       id: m.id,
+       popularity: m.popularity,
+     }));
+     dispatch(moviesLoaded(mappedResult));
+  }
+}
 
 const moviesReducer = createReducer<MovieState>(initialState, {
   "movies/loaded": (state, action: ActionWithPayload<Movie[]>) => {

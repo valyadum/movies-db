@@ -22,6 +22,7 @@ export const BoardFilm = styled.ul`
   padding: 0;
   gap: 20px;
   margin: 40px;
+  margin-top: 140px;
 `;
 export const FilmName = styled.p`
   position: absolute;

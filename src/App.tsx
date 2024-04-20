@@ -1,35 +1,44 @@
 import React from 'react';
 import logo from "/Users/valentynadumbrava/Desktop/movies-db/src/cinema-ico.png";
 import './App.css';
-import { Link, Outlet } from 'react-router-dom';
+import { Link as RouterLink, Outlet } from 'react-router-dom';
+import { AppBar, createTheme, CssBaseline, Link, ThemeProvider, Toolbar } from '@mui/material';
 
+function HeaderLink({children,to}:{children:React.ReactNode,to:string}) {
+  return (
+    <Link component={RouterLink} to={to} variant="button" color="inherit" sx={{my:1, mx:1.5}}>
+      {children}
+    </Link>
+  );
+}
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#104d75",
+    },
+    secondary: {
+      main: "#212529",
+    },
+  },
+});
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <ul className="App-list">
-          <li>
-            <Link className="App-link" to="/">
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link className="App-link" to="/movies">
-              Movies
-            </Link>
-          </li>
-          <li>
-            <Link className="App-link" to="/about">
-              About
-            </Link>
-          </li>
-        </ul>
-      </header>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <AppBar>
+        <Toolbar>
+          <img src={logo} className="App-logo" alt="logo" />
+          <nav>
+              <HeaderLink to="/">Home</HeaderLink>
+              <HeaderLink to="/movies">Movies</HeaderLink>
+              <HeaderLink to="/about">About</HeaderLink>
+          </nav>
+        </Toolbar>
+      </AppBar>
       <main className="App-main">
         <Outlet />
       </main>
-    </div>
+    </ThemeProvider>
   );
 }
 
