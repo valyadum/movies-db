@@ -19,10 +19,10 @@ export const BoardFilm = styled.ul`
   flex-wrap: wrap;
   justify-content: space-around;
   list-style: none;
-  padding: 0;
+  padding: 60px 60px;
   gap: 20px;
-  margin: 40px;
-  margin-top: 140px;
+  margin: 0 40px;
+
 `;
 export const FilmName = styled.p`
   position: absolute;

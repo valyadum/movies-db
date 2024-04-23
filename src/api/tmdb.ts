@@ -18,23 +18,8 @@ export interface MovieDetail {
   vote_average: number;
   vote_count: number;
 }
-export interface MovieInfo {
-  adult: boolean;
-  backdrop_path: string;
-  genre_ids: number[];
-  id: number;
-  original_language: string;
-  original_title: string;
-  popularity: number;
-  poster_path?: string;
-  release_date: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-  overview: string;
+export interface MovieInfo extends MovieDetail {
   genres: Genre[];
-
 }
 interface Genre{
   id: number;
@@ -46,6 +31,11 @@ interface Genre{
     total_pages: number;
     total_results: number;
   }
+interface PageDetails<TResult> {
+  page: number;
+  results: MovieDetail[];
+  total_pages: number;
+}
 
 axios.defaults.baseURL = "https://api.themoviedb.org";
   const config: AxiosRequestConfig = {
@@ -55,20 +45,26 @@ axios.defaults.baseURL = "https://api.themoviedb.org";
         `Bearer ${configuration.apiKey}`
     },
   };
-export const getFavoriteMovies = async () => {
-  try {
-    const res = await axios.get<Promise<MoviesData>>("3/movie/popular", config);
-    return (await res.data).results;
+export const getFavoriteMovies = async (page:number=1):Promise<PageDetails<MovieDetail>> => {
 
-  } catch (error) {
-    console.error(error);  
-  }
+    const res = await axios.get<MoviesData>(
+      `/3/movie/popular?page=${page}`,
+      config
+    );
+    return {
+      results: res.data.results,
+      page: res.data.page,
+      total_pages: res.data.total_pages,
+    };
+
 };
+
+
 export const getMovieDetails = async (
   movieId: string
 ): Promise<MovieInfo| undefined> => {
   try {
-    const res = await axios.get(`3/movie/${movieId}`, config);
+    const res = await axios.get<MovieInfo>(`3/movie/${movieId}`, config);
     return res.data;
   } catch (error) {
     console.error(error);

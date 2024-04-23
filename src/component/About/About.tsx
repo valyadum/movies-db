@@ -1,5 +1,6 @@
 import React from 'react'
 import axios, { AxiosRequestConfig } from "axios";
+import Loader from '../Loader/Loader';
 
   
 function About() {
@@ -49,7 +50,7 @@ console.log((await res.data).results);
 
   GetMovies();
 
-  return <div>About</div>;
+  return <div><Loader/></div>;
 }
 
 export default About;

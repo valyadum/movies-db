@@ -22,7 +22,7 @@ const defaultImg =
   "https://cannamazoo.com/assets/defaults/img/default-product-img.jpg";
   // const { poster_path, title, vote_average, overview, genres } = data;
   return (
-    <>
+
       <Container>
         {/* <ContainerButton>
           <ButtonBack to={backLink.current}>Go Back</ButtonBack>
@@ -72,7 +72,7 @@ const defaultImg =
           <Outlet />
         </CastStyle>
       </Container>
-    </>
+
   );
 }
 

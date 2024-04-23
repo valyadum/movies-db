@@ -25,7 +25,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AppBar>
+      <AppBar position='static'>
         <Toolbar>
           <img src={logo} className="App-logo" alt="logo" />
           <nav>

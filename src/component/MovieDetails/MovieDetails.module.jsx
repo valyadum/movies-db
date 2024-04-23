@@ -7,9 +7,8 @@ import { Link } from "react-router-dom";
 // `
 export const Container = styled.div`
   max-width: 960px;
-  margin: 40px auto;
+  margin: 0px auto;
   background-color: #0c0f21;
-  margin-top: 90px;
 `;
 export const ContainerButton = styled.div`
   /* margin-top:20px; */
@@ -18,7 +17,8 @@ export const ContainerButton = styled.div`
 export const ContainerFilm = styled.div`
   display: flex;
   gap: 30px;
- padding-top: 40px;
+ padding: 60px 40px;
+
 `;
 export const BoxInfo = styled.div`
   width: 70%;

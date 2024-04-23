@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
+import ModalContent from "../../ModalContent";
 import {  FilmName, Img} from "./MovieCard.styled";
 
 interface MovieCardsProps {
@@ -44,12 +46,8 @@ interface MovieCardsProps {
 //       "vote_count": 25927
 
 function MovieCard({ id, title, poster_path, popularity }: MovieCardsProps) {
-  // const {
-  //   id,
-  //   title,
-  //   image,
-  //   popularity
-  // } = movie;
+  const [showModal, setShowModal] = useState(false);
+
   const defaultImg =
     "https://cannamazoo.com/assets/defaults/img/default-product-img.jpg";
   return (
