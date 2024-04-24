@@ -19,9 +19,9 @@ export const BoardFilm = styled.ul`
   flex-wrap: wrap;
   justify-content: space-around;
   list-style: none;
-  padding: 60px 60px;
+  /* padding: 60px 60px; */
   gap: 20px;
-  margin: 0 40px;
+  margin: 16px 16px 0 0;
 
 `;
 export const FilmName = styled.p`

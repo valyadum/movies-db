@@ -1,19 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState} from "react";
 import { connect } from "react-redux";
 
 import {
   fetchNextPage,
   Movie,
-  // moviesLoaded,
-  // moviesLoading,
+  resetMovies,
 } from "../../reducers/movies";
 import { RootState } from "../../store";
 import MovieCard from "../MovieCard/MovieCard";
 import { BoardFilm, BoxFilm } from "../MovieCard/MovieCard.styled";
 import { useAppDispatch } from "../../hooks";
-// import { LinearProgress } from "@mui/material";
+
 import { useIntersectionObserver } from "../../hooks/useIntersectionObserver";
 import Loader from "../Loader/Loader";
+import { Grid } from "@mui/material";
+import MoviesFilter, { Filters } from "../MoviesFilter/MoviesFilter";
+import { KeywordsItem } from "../../api/tmdb";
 
 interface MoviesProps {
   movies: Movie[];
@@ -23,29 +25,43 @@ interface MoviesProps {
 
 function Movies({ movies, loading, hasMorePages }: MoviesProps) {
   const dispatch = useAppDispatch();
+  const [filter, setFilter] = useState<Filters>();
   const [targetRef, entry] = useIntersectionObserver();
   useEffect(() => {
+    dispatch(resetMovies());
+  },[dispatch])
+  useEffect(() => {
     if (entry?.isIntersecting && hasMorePages) {
-      dispatch(fetchNextPage());
+      const movieFilters = filter ? { keywords: filter.keywords.map((item:KeywordsItem) => item.id) } : undefined;
+      dispatch(fetchNextPage(movieFilters));
     }
-  }, [dispatch, entry?.isIntersecting, hasMorePages]);
+  }, [dispatch, entry?.isIntersecting, hasMorePages, filter]);
 
+  function filtrateMovies(data: Filters) {
+    dispatch(resetMovies());
+    setFilter(data);
+  }
   return (
-    <>
-      <BoardFilm>
-        {movies?.map((m) => (
-          <BoxFilm key={m.id}>
-            <MovieCard
-              id={m.id}
-              title={m.title}
-              poster_path={m.poster_path}
-              popularity={m.popularity}
-            />
-          </BoxFilm>
-        ))}
-      </BoardFilm>
-      <div ref={targetRef}>{loading && <Loader />}</div>
-    </>
+    <Grid container spacing={0} sx={{flexWrap:'nowrap', pt:3}}>
+      <Grid item xs={5}>
+        <MoviesFilter onApply={(data)=>filtrateMovies(data)}/>
+      </Grid>
+      <Grid item xs={12} >
+        <BoardFilm>
+          {movies?.map((m) => (
+            <BoxFilm key={m.id}>
+              <MovieCard    
+                id={m.id}
+                title={m.title}
+                poster_path={m.poster_path}
+                popularity={m.popularity}
+              />
+            </BoxFilm>
+          ))}
+        </BoardFilm>
+        <div ref={targetRef}>{loading && <Loader />}</div>
+      </Grid>
+    </Grid>
   );
 }
 const mapStateToProps = (state: RootState) => ({
@@ -57,3 +73,5 @@ const mapStateToProps = (state: RootState) => ({
 const connector = connect(mapStateToProps);
 
 export default connector(Movies);
+
+

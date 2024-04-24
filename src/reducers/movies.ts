@@ -1,3 +1,4 @@
+import { getFiltrateMovies, MovieFilters } from './../api/tmdb';
 import { AppThunk } from './../store';
 import { ActionWithPayload, createReducer } from "../redux/utils";
 import {getFavoriteMovies } from '../api/tmdb';
@@ -40,18 +41,23 @@ export const moviesLoaded = (movies: Movie[], page:number, hasMorePages:boolean)
 export const moviesLoading = () => ({
   type: "movies/loading",
 });
-
-export function fetchNextPage():AppThunk<Promise<void>> {
+export const resetMovies = () => ({
+  type:"movies/reset"
+})
+export function fetchNextPage(filters:MovieFilters={}):AppThunk<Promise<void>> {
   return async (dispatch, getState) => {
     const nextPage = getState().movies.page+1;
-    dispatch(fetchPage(nextPage));
+    dispatch(fetchPage(nextPage,filters));
 
   }
 }
-function fetchPage(page: number): AppThunk<Promise<void>> {
+function fetchPage(
+  page: number,
+  filters: MovieFilters = {}
+): AppThunk<Promise<void>> {
   return async (dispatch) => {
     dispatch(moviesLoading());
-    const dataPage = await getFavoriteMovies(page);
+    const dataPage = await getFiltrateMovies(page, filters);
 
     const mappedResult: Movie[] = (dataPage?.results ?? []).map((m) => ({
       title: m.title,
@@ -60,7 +66,7 @@ function fetchPage(page: number): AppThunk<Promise<void>> {
       popularity: m.popularity,
     }));
     const hasMorePages = dataPage?.page < dataPage?.total_pages;
-    dispatch(moviesLoaded(mappedResult,page, hasMorePages));
+    dispatch(moviesLoaded(mappedResult, page, hasMorePages));
   };
 }
 
@@ -80,6 +86,9 @@ const moviesReducer = createReducer<MovieState>(initialState, {
       loading: true,
     };
   },
+  "movies/reset": (state) => {
+    return{...initialState}
+  }
 });
 
 export default moviesReducer;

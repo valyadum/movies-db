@@ -2,7 +2,7 @@ import React from 'react';
 import logo from "/Users/valentynadumbrava/Desktop/movies-db/src/cinema-ico.png";
 import './App.css';
 import { Link as RouterLink, Outlet } from 'react-router-dom';
-import { AppBar, createTheme, CssBaseline, Link, ThemeProvider, Toolbar } from '@mui/material';
+import { AppBar, Box,  createTheme, CssBaseline, Link, ThemeProvider, Toolbar } from '@mui/material';
 
 function HeaderLink({children,to}:{children:React.ReactNode,to:string}) {
   return (
@@ -25,19 +25,21 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AppBar position='static'>
-        <Toolbar>
+      <AppBar position="static">
+        <Toolbar variant="regular">
           <img src={logo} className="App-logo" alt="logo" />
           <nav>
-              <HeaderLink to="/">Home</HeaderLink>
-              <HeaderLink to="/movies">Movies</HeaderLink>
-              <HeaderLink to="/about">About</HeaderLink>
+            <HeaderLink to="/">Home</HeaderLink>
+            <HeaderLink to="/movies">Movies</HeaderLink>
+            <HeaderLink to="/about">About</HeaderLink>
           </nav>
         </Toolbar>
       </AppBar>
+      <Box>
       <main className="App-main">
         <Outlet />
-      </main>
+        </main>
+      </Box>
     </ThemeProvider>
   );
 }

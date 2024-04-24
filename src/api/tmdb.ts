@@ -1,6 +1,6 @@
-import { Movie } from './../reducers/movies';
 import configuration from "../configuration";
 import axios, { AxiosRequestConfig } from "axios";
+
 
 export interface MovieDetail {
   adult: boolean;
@@ -31,13 +31,21 @@ interface Genre{
     total_pages: number;
     total_results: number;
   }
-interface PageDetails<TResult> {
+interface PageDetails<T> {
   page: number;
-  results: MovieDetail[];
+  results: T;
   total_pages: number;
+}
+  export interface KeywordsItem {
+    id: number;
+    name: string;
+  }
+export interface MovieFilters{
+  keywords?: number[];
 }
 
 axios.defaults.baseURL = "https://api.themoviedb.org";
+
   const config: AxiosRequestConfig = {
     headers: {
       accept: "application/json",
@@ -45,8 +53,7 @@ axios.defaults.baseURL = "https://api.themoviedb.org";
         `Bearer ${configuration.apiKey}`
     },
   };
-export const getFavoriteMovies = async (page:number=1):Promise<PageDetails<MovieDetail>> => {
-
+export const getFavoriteMovies = async (page:number=1):Promise<PageDetails<MovieDetail[]>> => {
     const res = await axios.get<MoviesData>(
       `/3/movie/popular?page=${page}`,
       config
@@ -58,15 +65,50 @@ export const getFavoriteMovies = async (page:number=1):Promise<PageDetails<Movie
     };
 
 };
+export const getFiltrateMovies = async (
+  page: number = 1,
+  filters:MovieFilters
+): Promise<PageDetails<MovieDetail[]>> => {
+  const params = new URLSearchParams({
+    page:page.toString()
+  })
+  if (filters.keywords?.length) {
+    params.append("with_keywords", filters.keywords.join("|"))
+  }
+  const query = params.toString();
+
+  const res = await axios.get<MoviesData>(
+    `/3/discover/movie?${query}`,
+    config
+  );
+  return {
+    results: res.data.results,
+    page: res.data.page,
+    total_pages: res.data.total_pages,
+  };
+};
 
 
 export const getMovieDetails = async (
   movieId: string
 ): Promise<MovieInfo| undefined> => {
   try {
-    const res = await axios.get<MovieInfo>(`3/movie/${movieId}`, config);
+    const res = await axios.get<MovieInfo>(`/3/movie/${movieId}`, config);
     return res.data;
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const getKeywords = async (query: string): Promise<KeywordsItem[]> => {
+  try {
+    const res = await axios.get<PageDetails<KeywordsItem[]>>(
+      `/3/search/keyword?query=${query}`,
+      config
+    );
+    return res.data.results;
+  } catch (error) {
+    console.error("Error fetching keywords:", error);
+    return []; 
   }
 };
