@@ -32,13 +32,16 @@ function Movies({ movies, loading, hasMorePages }: MoviesProps) {
   },[dispatch])
   useEffect(() => {
     if (entry?.isIntersecting && hasMorePages) {
-      const movieFilters = filter ? { keywords: filter.keywords.map((item:KeywordsItem) => item.id) } : undefined;
+     const word = filter ? { keywords: filter.keywords.map((item:KeywordsItem) => item.id) } : undefined;
+     const date = filter?{year:filter.primary_release_year}:undefined
+     const movieFilters = { ...word, ...date };
       dispatch(fetchNextPage(movieFilters));
     }
   }, [dispatch, entry?.isIntersecting, hasMorePages, filter]);
 
   function filtrateMovies(data: Filters) {
     dispatch(resetMovies());
+    console.log(data);
     setFilter(data);
   }
   return (

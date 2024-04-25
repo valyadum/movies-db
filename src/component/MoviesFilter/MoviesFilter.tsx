@@ -10,16 +10,19 @@ import {
 import React, { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { getKeywords } from "../../api/tmdb";
+import RangeSlider from "../RangeSlider/RangeSlider";
 
 export  interface Filters {
-    keywords: KeywordsItem[];
-  }
+  keywords: KeywordsItem[];
+  primary_release_year: number;
+}
   interface KeywordsItem {
     id: number;
     name: string;
   }
 interface MoviesFilterProps{
-  onApply(filters:Filters): void;
+  onApply(filters: Filters): void;
+
 
 }
 function MoviesFilter({ onApply}: MoviesFilterProps) {
@@ -29,6 +32,7 @@ function MoviesFilter({ onApply}: MoviesFilterProps) {
   const { handleSubmit, control } = useForm<Filters>({
     defaultValues: {
       keywords: [],
+      primary_release_year: 2024,
     },
   });
 
@@ -78,6 +82,7 @@ function MoviesFilter({ onApply}: MoviesFilterProps) {
             )}
           />
         </FormControl>
+        <RangeSlider control={control} />
         <Button
           type="submit"
           variant="contained"

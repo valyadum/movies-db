@@ -1,7 +1,6 @@
 import configuration from "../configuration";
 import axios, { AxiosRequestConfig } from "axios";
 
-
 export interface MovieDetail {
   adult: boolean;
   backdrop_path: string;
@@ -21,64 +20,43 @@ export interface MovieDetail {
 export interface MovieInfo extends MovieDetail {
   genres: Genre[];
 }
-interface Genre{
+interface Genre {
   id: number;
-  name: string
+  name: string;
 }
-  interface MoviesData {
-    page: number;
-    results: MovieDetail[];
-    total_pages: number;
-    total_results: number;
-  }
+interface MoviesData {
+  page: number;
+  results: MovieDetail[];
+  total_pages: number;
+  total_results: number;
+}
 interface PageDetails<T> {
   page: number;
   results: T;
   total_pages: number;
 }
-  export interface KeywordsItem {
-    id: number;
-    name: string;
-  }
-export interface MovieFilters{
+export interface KeywordsItem {
+  id: number;
+  name: string;
+}
+export interface MovieFilters {
   keywords?: number[];
+  year?: number;
 }
 
 axios.defaults.baseURL = "https://api.themoviedb.org";
 
-  const config: AxiosRequestConfig = {
-    headers: {
-      accept: "application/json",
-      Authorization:
-        `Bearer ${configuration.apiKey}`
-    },
-  };
-export const getFavoriteMovies = async (page:number=1):Promise<PageDetails<MovieDetail[]>> => {
-    const res = await axios.get<MoviesData>(
-      `/3/movie/popular?page=${page}`,
-      config
-    );
-    return {
-      results: res.data.results,
-      page: res.data.page,
-      total_pages: res.data.total_pages,
-    };
-
+const config: AxiosRequestConfig = {
+  headers: {
+    accept: "application/json",
+    Authorization: `Bearer ${configuration.apiKey}`,
+  },
 };
-export const getFiltrateMovies = async (
-  page: number = 1,
-  filters:MovieFilters
+export const getFavoriteMovies = async (
+  page: number = 1
 ): Promise<PageDetails<MovieDetail[]>> => {
-  const params = new URLSearchParams({
-    page:page.toString()
-  })
-  if (filters.keywords?.length) {
-    params.append("with_keywords", filters.keywords.join("|"))
-  }
-  const query = params.toString();
-
   const res = await axios.get<MoviesData>(
-    `/3/discover/movie?${query}`,
+    `/3/movie/popular?page=${page}`,
     config
   );
   return {
@@ -87,11 +65,34 @@ export const getFiltrateMovies = async (
     total_pages: res.data.total_pages,
   };
 };
+export const getFiltrateMovies = async (
+  page: number = 1,
+  filters: MovieFilters
+): Promise<PageDetails<MovieDetail[]>> => {
+  console.log(filters);
 
+  const params = new URLSearchParams({
+    page: page.toString(),
+  });
+  if (filters.keywords?.length) {
+    params.append("with_keywords", filters.keywords.join("|"));
+  }
+  if (filters.year) {
+    params.append("primary_release_year", filters.year.toString());
+  }
+  const query = params.toString();
+
+  const res = await axios.get<MoviesData>(`/3/discover/movie?${query}`, config);
+  return {
+    results: res.data.results,
+    page: res.data.page,
+    total_pages: res.data.total_pages,
+  };
+};
 
 export const getMovieDetails = async (
   movieId: string
-): Promise<MovieInfo| undefined> => {
+): Promise<MovieInfo | undefined> => {
   try {
     const res = await axios.get<MovieInfo>(`/3/movie/${movieId}`, config);
     return res.data;
@@ -109,6 +110,9 @@ export const getKeywords = async (query: string): Promise<KeywordsItem[]> => {
     return res.data.results;
   } catch (error) {
     console.error("Error fetching keywords:", error);
-    return []; 
+    return [];
   }
 };
+
+// primary_release_year   для року пошук
+// region
