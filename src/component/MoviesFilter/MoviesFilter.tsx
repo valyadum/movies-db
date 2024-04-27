@@ -10,11 +10,13 @@ import {
 import React, { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { getKeywords } from "../../api/tmdb";
+import CheckedFilter from "../CheckedFilter/CheckedFilter";
 import RangeSlider from "../RangeSlider/RangeSlider";
 
 export  interface Filters {
   keywords: KeywordsItem[];
-  primary_release_year: number;
+  primary_release_year?: number;
+  genres?: number[];
 }
   interface KeywordsItem {
     id: number;
@@ -32,7 +34,8 @@ function MoviesFilter({ onApply}: MoviesFilterProps) {
   const { handleSubmit, control } = useForm<Filters>({
     defaultValues: {
       keywords: [],
-      primary_release_year: 2024,
+      primary_release_year: 1900,
+      genres:[],
     },
   });
 
@@ -52,6 +55,9 @@ function MoviesFilter({ onApply}: MoviesFilterProps) {
       }, 1000),
     []
   );
+
+
+  
   return (
     <Paper sx={{ m: 2, p: 0.5 }}>
       <form onSubmit={handleSubmit(onApply)}>
@@ -82,6 +88,7 @@ function MoviesFilter({ onApply}: MoviesFilterProps) {
             )}
           />
         </FormControl>
+        <CheckedFilter control={control} />
         <RangeSlider control={control} />
         <Button
           type="submit"

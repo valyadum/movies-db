@@ -42,11 +42,22 @@ export interface KeywordsItem {
 export interface MovieFilters {
   keywords?: number[];
   year?: number;
+  genres?: number[];
 }
+
+export interface GenresItem{
+  id: number;
+  name: string;
+}
+
+
+export interface GenresList<T>{
+  genres: T[];
+};
 
 axios.defaults.baseURL = "https://api.themoviedb.org";
 
-const config: AxiosRequestConfig = {
+export  const config: AxiosRequestConfig = {
   headers: {
     accept: "application/json",
     Authorization: `Bearer ${configuration.apiKey}`,
@@ -69,17 +80,25 @@ export const getFiltrateMovies = async (
   page: number = 1,
   filters: MovieFilters
 ): Promise<PageDetails<MovieDetail[]>> => {
-  console.log(filters);
+  
 
   const params = new URLSearchParams({
     page: page.toString(),
   });
+  console.log(filters);
+  
   if (filters.keywords?.length) {
     params.append("with_keywords", filters.keywords.join("|"));
   }
   if (filters.year) {
-    params.append("primary_release_year", filters.year.toString());
+    if (filters.year !== 1900) {
+    params.append("primary_release_year", filters.year.toString());}
   }
+  if (filters.genres?.length) {
+      console.log(filters.genres.join(","));
+      
+      params.append("with_genres", filters.genres.join(","));
+    }
   const query = params.toString();
 
   const res = await axios.get<MoviesData>(`/3/discover/movie?${query}`, config);
@@ -113,6 +132,21 @@ export const getKeywords = async (query: string): Promise<KeywordsItem[]> => {
     return [];
   }
 };
+export const getGenres = async (): Promise<GenresItem[]> => {
+  try {
+    const res = await axios.get<GenresList<GenresItem>>(
+      `3/genre/movie/list`,
+      config
+    );
+    console.log(res.data.genres);
+    
+    return res.data.genres;
+  } catch (error) {
+    console.error("Error fetching genres:", error);
+    return [];
+  }
+};
+
 
 // primary_release_year   для року пошук
 // region
