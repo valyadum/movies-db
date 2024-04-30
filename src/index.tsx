@@ -29,26 +29,26 @@ function AppEntrypoint() {
 
 const routes = [
   {
-    path: "/",
+    path: "",
     element: <AppEntrypoint />,
     children: [
       {
-        path: "/about",
+        path: "about",
         element: <About />,
       },
       {
-        path: "/movies",
+        path: "movies",
         element: <Movies />,
       },
       {
-        path: "/movies/:movieId",
+        path: "movies/:movieId",
         element: <MovieDetails />,
       },
     ],
   },
 ];
 // @ts-ignore
-const router = createBrowserRouter(routes, { basename: "/movies-db" });
+const router = createBrowserRouter(routes, { basename: "/movies-db/" });
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
