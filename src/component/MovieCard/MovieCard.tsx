@@ -1,7 +1,5 @@
-import React, { memo, useState } from "react";
-import { createPortal } from "react-dom";
+import React, { memo} from "react";
 import { Link } from "react-router-dom";
-import ModalContent from "../../ModalContent";
 import {  FilmName, Img} from "./MovieCard.styled";
 
 interface MovieCardsProps {
@@ -46,7 +44,7 @@ interface MovieCardsProps {
 //       "vote_count": 25927
 
 function MovieCard({ id, title, poster_path, popularity }: MovieCardsProps) {
-  const [showModal, setShowModal] = useState(false);
+
 
 
   const defaultImg =

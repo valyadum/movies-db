@@ -3,13 +3,12 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
-import React, { StrictMode } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import {
-  BrowserRouter,
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
@@ -49,7 +48,7 @@ const routes = [
   },
 ];
 // @ts-ignore
-const router = createBrowserRouter(routes, { basename: "/movie-db" });
+const router = createBrowserRouter(routes, { basename: "/movies-db" });
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
