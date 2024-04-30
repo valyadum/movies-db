@@ -16,7 +16,6 @@ function CheckedFilter({ control }: CheckedProps) {
       const fetchGenres = async () => {
         const fetchedGenres = await getGenres();
           setGenres(fetchedGenres);
-          console.log(fetchedGenres);
       };
       fetchGenres();
     }, []); 

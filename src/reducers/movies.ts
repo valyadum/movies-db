@@ -1,7 +1,6 @@
 import { getFiltrateMovies, MovieFilters } from './../api/tmdb';
 import { AppThunk } from './../store';
 import { ActionWithPayload, createReducer } from "../redux/utils";
-import {getFavoriteMovies } from '../api/tmdb';
 
 export interface Movie{
     // adult: boolean;
@@ -46,7 +45,7 @@ export const resetMovies = () => ({
 })
 export function fetchNextPage(filters:MovieFilters={}):AppThunk<Promise<void>> {
   return async (dispatch, getState) => {
-    const nextPage = getState().movies.page+1;
+    const nextPage = getState().movies.page + 1 ;
     dispatch(fetchPage(nextPage,filters));
 
   }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import ModalContent from "../../ModalContent";
@@ -48,6 +48,7 @@ interface MovieCardsProps {
 function MovieCard({ id, title, poster_path, popularity }: MovieCardsProps) {
   const [showModal, setShowModal] = useState(false);
 
+
   const defaultImg =
     "https://cannamazoo.com/assets/defaults/img/default-product-img.jpg";
   return (
@@ -69,4 +70,4 @@ function MovieCard({ id, title, poster_path, popularity }: MovieCardsProps) {
   );
 }
 
-export default MovieCard;
+export default memo(MovieCard);

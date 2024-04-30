@@ -51,8 +51,8 @@ function Movies({ movies, loading, hasMorePages }: MoviesProps) {
       </Grid>
       <Grid item xs={12} >
         <BoardFilm>
-          {movies?.map((m) => (
-            <BoxFilm key={m.id}>
+          {movies?.map((m,i) => (
+            <BoxFilm key={`${m.id}+${i}`}>
               <MovieCard    
                 id={m.id}
                 title={m.title}

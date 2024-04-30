@@ -59,7 +59,7 @@ function MoviesFilter({ onApply}: MoviesFilterProps) {
 
   
   return (
-    <Paper sx={{ m: 2, p: 0.5 }}>
+    <Paper sx={{ m: 2, p: 0.6 }}>
       <form onSubmit={handleSubmit(onApply)}>
         <FormControl
           component="fieldset"

@@ -85,7 +85,6 @@ export const getFiltrateMovies = async (
   const params = new URLSearchParams({
     page: page.toString(),
   });
-  console.log(filters);
   
   if (filters.keywords?.length) {
     params.append("with_keywords", filters.keywords.join("|"));
@@ -138,7 +137,6 @@ export const getGenres = async (): Promise<GenresItem[]> => {
       `3/genre/movie/list`,
       config
     );
-    console.log(res.data.genres);
     
     return res.data.genres;
   } catch (error) {
