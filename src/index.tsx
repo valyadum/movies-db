@@ -34,15 +34,15 @@ const routes = [
     element: <AppEntrypoint />,
     children: [
       {
-        path: "about",
+        path: "/about",
         element: <About />,
       },
       {
-        path: "movies",
+        path: "/movies",
         element: <Movies />,
       },
       {
-        path: "movies/:movieId",
+        path: "/movies/:movieId",
         element: <MovieDetails />,
       },
     ],
