@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/movies-db/static/css/main.b68ddb9c.css",
-    "main.js": "/movies-db/static/js/main.53632620.js",
+    "main.js": "/movies-db/static/js/main.e006a098.js",
     "static/js/453.5645c8aa.chunk.js": "/movies-db/static/js/453.5645c8aa.chunk.js",
     "static/media/cinema-ico.png": "/movies-db/static/media/cinema-ico.901a179b50b06fd77621.png",
     "static/media/roboto-latin-500-normal.woff2": "/movies-db/static/media/roboto-latin-500-normal.f25d774ecfe0996f8eb5.woff2",
@@ -62,11 +62,11 @@
     "static/media/roboto-greek-ext-700-normal.woff": "/movies-db/static/media/roboto-greek-ext-700-normal.249853776d22a271b2b5.woff",
     "index.html": "/movies-db/index.html",
     "main.b68ddb9c.css.map": "/movies-db/static/css/main.b68ddb9c.css.map",
-    "main.53632620.js.map": "/movies-db/static/js/main.53632620.js.map",
+    "main.e006a098.js.map": "/movies-db/static/js/main.e006a098.js.map",
     "453.5645c8aa.chunk.js.map": "/movies-db/static/js/453.5645c8aa.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.b68ddb9c.css",
-    "static/js/main.53632620.js"
+    "static/js/main.e006a098.js"
   ]
 }
