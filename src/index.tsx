@@ -3,7 +3,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
@@ -12,43 +12,71 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import About from "./component/About/About";
-
 import { Provider } from "react-redux";
 import store from "./store";
-import Movies from "./component/Movies/Movies";
-import MovieDetails from "./component/MovieDetails/MovieDetails";
+import Loader from "./component/Loader/Loader";
+import NotFound from "./component/NotFound/NotFound";
+
+
+
+const About = lazy(() => import("./component/About/About"));
+const Movies = lazy(() => import("./component/Movies/Movies"));
+const MovieDetails = lazy(() => import("./component/MovieDetails/MovieDetails"));
+const Home = lazy(() => import("./component/Home/Home"));
 
 function AppEntrypoint() {
   return (
-      <Provider store={store}>
+    <Provider store={store}>
         <App />
       </Provider>
   );
 }
 
+
 const routes = [
   {
-    path: "",
+    path: "/",
     element: <AppEntrypoint />,
+    errorElement:<NotFound/>,
     children: [
       {
+        index: true,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <Home />
+          </Suspense>
+        ),
+      },
+      {
         path: "about",
-        element: <About />,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <About />
+          </Suspense>
+        ),
       },
       {
         path: "movies",
-        element: <Movies />,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <Movies />
+          </Suspense>
+        ),
       },
       {
         path: "movies/:movieId",
-        element: <MovieDetails />,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <MovieDetails />
+          </Suspense>
+        ),
       },
+
     ],
   },
 ];
 // @ts-ignore
-const router = createBrowserRouter(routes, { basename: "/movies-db/" });
+const router = createBrowserRouter(routes, { basename: "/movies-db" });
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

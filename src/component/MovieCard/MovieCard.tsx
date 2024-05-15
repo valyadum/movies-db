@@ -1,5 +1,5 @@
 import React, { memo} from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {  FilmName, Img} from "./MovieCard.styled";
 
 interface MovieCardsProps {
@@ -44,14 +44,12 @@ interface MovieCardsProps {
 //       "vote_count": 25927
 
 function MovieCard({ id, title, poster_path, popularity }: MovieCardsProps) {
-
-
-
-  const defaultImg =
+   const location = useLocation();
+   const defaultImg =
     "https://cannamazoo.com/assets/defaults/img/default-product-img.jpg";
   return (
     <>
-      <Link to={`/movies/${id}`}>
+      <Link to={`/movies/${id}`} state={{ from: location }}>
         <Img
           src={
             poster_path

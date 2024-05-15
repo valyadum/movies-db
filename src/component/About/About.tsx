@@ -2,6 +2,7 @@ import React from 'react'
 import axios, { AxiosRequestConfig } from "axios";
 import Loader from '../Loader/Loader';
 
+
   
 function About() {
   interface Movies {
@@ -50,7 +51,16 @@ console.log((await res.data).results);
 
   GetMovies();
 
-  return <div><Loader/></div>;
+  return (
+    <div>
+      <ul>
+        <li>wefbew</li>
+        <li>wefbew</li>
+        <li>wefbew</li>
+        <li>wefbew</li>
+      </ul>
+    </div>
+  );
 }
 
 export default About;

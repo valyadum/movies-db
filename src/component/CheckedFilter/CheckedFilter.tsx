@@ -1,8 +1,9 @@
-import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel} from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Skeleton} from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { Controller } from 'react-hook-form';
 import { GenresItem, getGenres } from '../../api/tmdb';
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { useGetGenresQuery } from '../../services/tmbd';
 
 interface CheckedProps {
   control: any;
@@ -10,15 +11,16 @@ interface CheckedProps {
 
 
 function CheckedFilter({ control }: CheckedProps) {
+  const { data:genres=[], isLoading:genresLoading} = useGetGenresQuery();
 
-    const [genres, setGenres] = useState<GenresItem[]>();
-    useEffect(() => {
-      const fetchGenres = async () => {
-        const fetchedGenres = await getGenres();
-          setGenres(fetchedGenres);
-      };
-      fetchGenres();
-    }, []); 
+    // const [genres, setGenres] = useState<GenresItem[]>();
+    // useEffect(() => {
+    //   const fetchGenres = async () => {
+    //     const fetchedGenres = await getGenres();
+    //       setGenres(fetchedGenres);
+    //   };
+    //   fetchGenres();
+    // }, []); 
   
   return (
     <FormControl
@@ -34,7 +36,7 @@ function CheckedFilter({ control }: CheckedProps) {
         >
           <FormLabel>Genres</FormLabel>
         </AccordionSummary>
-        <AccordionDetails>
+       {genresLoading ?<Skeleton/>: ( <AccordionDetails>
           <FormGroup sx={{ maxHeight: 500 }}>
             <Controller
               control={control}
@@ -70,7 +72,7 @@ function CheckedFilter({ control }: CheckedProps) {
               )}
             />
           </FormGroup>
-        </AccordionDetails>
+        </AccordionDetails>)}
       </Accordion>
     </FormControl>
   );

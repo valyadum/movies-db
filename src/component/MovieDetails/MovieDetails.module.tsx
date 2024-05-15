@@ -12,13 +12,41 @@ export const Container = styled.div`
 `;
 export const ContainerButton = styled.div`
   /* margin-top:20px; */
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
 `;
-export const ContainerFilm = styled.div`
+interface ContainerFilmProps {
+  data?: string;
+}
+export const ContainerFilm = styled.div<ContainerFilmProps>`
   display: flex;
   gap: 30px;
- padding: 60px 40px;
+  padding: 60px 40px;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: linear-gradient(
+      to right,
+      rgba(52.5, 52.5, 52.5, 1) calc((50vw - 170px) - 340px),
+      rgba(52.5, 52.5, 52.5, 0.84) 50%,
+      rgba(52.5, 52.5, 52.5, 0.84) 100%
+    ),
+    url(${(props) => props.data});
 
+  background-size: cover;
+  background-position: center;
+  flex-direction: column;
+`;
+export const InfoContainer = styled.div`
+  display: flex;
+  gap: 30px;
+  padding: 40px 40px;
+`;
+export const BackgroundImg = styled.div`
+  border-bottom: 1px solid var(--primaryColor);
+  background-position: left calc((50vw - 170px) - 340px) top;
+  background-size: cover;
+  background-repeat: no-repeat;
 `;
 export const BoxInfo = styled.div`
   width: 70%;
@@ -38,6 +66,7 @@ export const BoxFilm = styled.div`
 `;
 export const Img = styled.img`
   width: 100%;
+  height: 100%;
 `;
 export const Title = styled.h2`
   font-size: calc(1.375rem + 1.5vw);
@@ -62,6 +91,7 @@ export const GenresUl = styled.ul`
   display: flex;
   gap: 10px;
   align-items: center;
+  margin-top: 15px;
 `;
 export const GenresItem = styled.li`
   background: linear-gradient(to bottom, #09081b7a, #6a78b2);
@@ -79,7 +109,12 @@ export const Line = styled.hr`
   --bs-text-opacity: 1;
   color: rgba((255, 255, 255), var(--bs-text-opacity)) !important;
 `;
-export const CastStyle = styled.div``;
+export const CastStyle = styled.div`
+  position: absolute;
+  top: 100%; /* розмістіть бокс під інформацією про фільм */
+  width: 100%; /* розтягніть бокс на всю ширину */
+  margin-top: 20px; /* встановіть відступ від інформації про фільм */
+`;
 export const CastLi = styled.li`
   padding-left: 10px;
   border-left: 4px solid #ffc107;

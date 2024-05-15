@@ -1,59 +1,75 @@
-import React, { useEffect, useState} from "react";
-import { connect } from "react-redux";
-
-import {
-  fetchNextPage,
-  Movie,
-  resetMovies,
-} from "../../reducers/movies";
-import { RootState } from "../../store";
+import { useCallback, useState } from "react";
 import MovieCard from "../MovieCard/MovieCard";
 import { BoardFilm, BoxFilm } from "../MovieCard/MovieCard.styled";
-import { useAppDispatch } from "../../hooks";
 
 import { useIntersectionObserver } from "../../hooks/useIntersectionObserver";
 import Loader from "../Loader/Loader";
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import MoviesFilter, { Filters } from "../MoviesFilter/MoviesFilter";
-import { KeywordsItem } from "../../api/tmdb";
+import { MovieFilters } from "../../api/tmdb";
+import { MovieQuery, useGetFiltrateMoviesQuery } from "../../services/tmbd";
+import { useLocation } from "react-router-dom";
 
-interface MoviesProps {
-  movies: Movie[];
-  loading: boolean;
-  hasMorePages: boolean;
-}
+// interface MoviesProps {
+//   movies: Movie[];
+//   loading: boolean;
+//   hasMorePages: boolean;
+// }
+const initialQuery: MovieQuery = {
+  page: 1,
+  filters: {},
+};
 
-function Movies({ movies, loading, hasMorePages }: MoviesProps) {
-  const dispatch = useAppDispatch();
+function Movies() {
+  const [query, setQuery] = useState<MovieQuery>(initialQuery);
+  const { data, isFetching } = useGetFiltrateMoviesQuery(query);
   const [filter, setFilter] = useState<Filters>();
-  const [targetRef, entry] = useIntersectionObserver();
-  useEffect(() => {
-    dispatch(resetMovies());
-  },[dispatch])
-  useEffect(() => {
-    if (entry?.isIntersecting && hasMorePages) {
-     const word = filter ? { keywords: filter.keywords.map((item:KeywordsItem) => item.id) } : undefined;
-      const date = filter ? { year: filter.primary_release_year } : undefined;
-      const genres = filter ? { genres: filter.genres } : undefined;
-     const movieFilters = { ...word, ...date,...genres };
-      dispatch(fetchNextPage(movieFilters));
+  const movies = data?.results;
+  const hasMorePages = data?.hasMorePages;
+  const onIntersect = useCallback(() => {
+    if (hasMorePages) {
+      setQuery((q) => ({ ...q, page: q.page + 1 }));
     }
-  }, [dispatch, entry?.isIntersecting, hasMorePages, filter]);
+  }, [hasMorePages]);
+  const [targetRef] = useIntersectionObserver({ onIntersect });
+
+  // useEffect(() => {
+  //   if (entry?.isIntersecting && hasMorePages) {
+  //    const word = filter ? { keywords: filter.keywords.map((item:KeywordsItem) => item.id) } : undefined;
+  //     const date = filter ? { year: filter.primary_release_year } : undefined;
+  //     const genres = filter ? { genres: filter.genres } : undefined;
+  //    const movieFilters = { ...word, ...date,...genres };
+  //     dispatch(fetchNextPage(movieFilters));
+  //   }
+  // }, [dispatch, entry?.isIntersecting, hasMorePages, filter]);
 
   function filtrateMovies(data: Filters) {
-    dispatch(resetMovies());
-    setFilter(data);
+    // dispatch(resetMovies());
+    const moviesFilters: MovieFilters = {
+      keywords: data.keywords.map((item) => item.id),
+      genres: data.genres,
+      year: data.primary_release_year,
+    };
+    setQuery({
+      page: 1,
+      filters: moviesFilters,
+    });
   }
   return (
-    <Grid container spacing={0} sx={{flexWrap:'nowrap', pt:3}}>
+    <Grid container spacing={0} sx={{ flexWrap: "nowrap", pt: 3 }}>
       <Grid item xs={5}>
-        <MoviesFilter onApply={(data)=>filtrateMovies(data)}/>
+        <MoviesFilter onApply={(data) => filtrateMovies(data)} />
       </Grid>
-      <Grid item xs={12} >
+      <Grid item xs={12}>
+        {!isFetching && !movies?.length && (
+          <Typography variant="h6">
+            No movies were found that match you query
+          </Typography>
+        )}
         <BoardFilm>
-          {movies?.map((m,i) => (
+          {movies?.map((m, i) => (
             <BoxFilm key={`${m.id}+${i}`}>
-              <MovieCard    
+              <MovieCard
                 id={m.id}
                 title={m.title}
                 poster_path={m.poster_path}
@@ -62,19 +78,17 @@ function Movies({ movies, loading, hasMorePages }: MoviesProps) {
             </BoxFilm>
           ))}
         </BoardFilm>
-        <div ref={targetRef}>{loading && <Loader />}</div>
+        <div ref={targetRef}>{isFetching && <Loader />}</div>
       </Grid>
     </Grid>
   );
 }
-const mapStateToProps = (state: RootState) => ({
-  movies: state.movies.top,
-  loading: state.movies.loading,
-  hasMorePages:state.movies.hasMorePages,
-});
+// const mapStateToProps = (state: RootState) => ({
+//   movies: state.movies.top,
+//   loading: state.movies.loading,
+//   hasMorePages:state.movies.hasMorePages,
+// });
 
-const connector = connect(mapStateToProps);
+// const connector = connect(mapStateToProps);
 
-export default connector(Movies);
-
-
+export default Movies;

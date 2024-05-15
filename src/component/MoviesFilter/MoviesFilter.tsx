@@ -7,9 +7,11 @@ import {
   Paper,
   TextField,
 } from "@mui/material";
+import { key } from "localforage";
 import React, { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { getKeywords } from "../../api/tmdb";
+import { useGetGenresQuery, useGetKeywordsQuery } from "../../services/tmbd";
 import CheckedFilter from "../CheckedFilter/CheckedFilter";
 import RangeSlider from "../RangeSlider/RangeSlider";
 
@@ -27,9 +29,10 @@ interface MoviesFilterProps{
 
 
 }
-function MoviesFilter({ onApply}: MoviesFilterProps) {
-  const [keywordsLoading, setKeywordsLoading] = useState(false);
-  const [keywordsOption, setKeywordsOption] = useState<KeywordsItem[]>([]);
+function MoviesFilter({ onApply }: MoviesFilterProps) {
+  const [keywords, setKeywords] = useState<string>('');
+  const { data: keywordsOption = [], isLoading: keywordsLoading } =
+    useGetKeywordsQuery(keywords,{skip:!keywords});
 
   const { handleSubmit, control } = useForm<Filters>({
     defaultValues: {
@@ -39,22 +42,7 @@ function MoviesFilter({ onApply}: MoviesFilterProps) {
     },
   });
 
-  const fetchKeyword = useMemo(
-    () =>
-      debounce(async (query: string) => {
-        if (query) {
-          setKeywordsLoading(true);
-          const options = await getKeywords(query);
-          console.log(options);
-
-          setKeywordsLoading(false);
-          setKeywordsOption(options);
-        } else {
-          setKeywordsOption([]);
-        }
-      }, 1000),
-    []
-  );
+  const fetchKeyword = useMemo(() =>debounce((query: string) => {setKeywords(query)}, 1000),[]);
 
 
   
