@@ -102,6 +102,7 @@ export const GenresItem = styled.li`
 `;
 export const Line = styled.hr`
   margin: 1rem 0;
+  /* width: 80%; */
   color: inherit;
   border: 0;
   border-top: 1px solid;
@@ -111,9 +112,10 @@ export const Line = styled.hr`
 `;
 export const CastStyle = styled.div`
   position: absolute;
-  top: 100%; /* розмістіть бокс під інформацією про фільм */
-  width: 100%; /* розтягніть бокс на всю ширину */
-  margin-top: 20px; /* встановіть відступ від інформації про фільм */
+  top: 100%; 
+  width: 95%;
+  margin-top: 20px;
+  margin-bottom: 20px;
 `;
 export const CastLi = styled.li`
   padding-left: 10px;

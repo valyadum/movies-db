@@ -51,10 +51,42 @@ interface GenresItem{
   id: number;
   name: string;
 }
- interface GenresList<T>{
-  genres: T[];
-};
-export const tmdbApi =createApi({
+//  interface GenresList<T>{
+//   genres: T[];
+// };
+// interface MovieCredits {
+//   id: number;
+//   cast: CastInterface[];
+//   crew: CrewInterface[];
+// }
+interface CastInterface {
+  adult: boolean;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string;
+  cast_id: number;
+  character: string;
+  credit_id: string;
+  order: number;
+}
+// interface CrewInterface {
+//   adult: boolean;
+//   gender: number;
+//   id: number;
+//   known_for_department: string;
+//   name: string;
+//   original_name: string;
+//   popularity: number;
+//   profile_path: string;
+//   credit_id: string;
+//   department: string;
+//   job: string;
+// }
+export const tmdbApi = createApi({
   reducerPath: "tmbdApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${configuration.apiUrl}/3`,
@@ -93,28 +125,33 @@ export const tmdbApi =createApi({
         const path = `/discover/movie?${query}`;
 
         return path;
-        },
-        transformResponse(response: PageResponse<MovieDetail>, _, arg:MovieQuery) {
-            return {
-                results: response.results,
-                lastPage: response.page,
-                hasMorePages: arg.page < response.total_pages,
-            }
-        },
-        serializeQueryArgs({endpointName}){return endpointName},// завжди повертатиме один і той же кеш, в іншому випадку будуть створюватися різні кеш-ендпоінти через запити
-        merge(currentCatchData, responseData) {
-            if (responseData.lastPage===1) {
-                currentCatchData.results = responseData.results;
-            }
-            else {
-                currentCatchData.results.push(...responseData.results)
-            }
-            currentCatchData.lastPage = responseData.lastPage;
-            currentCatchData.hasMorePages = responseData.hasMorePages;
-        },
-        forceRefetch({ currentArg, previousArg }) {
-            return currentArg !== previousArg;
+      },
+      transformResponse(
+        response: PageResponse<MovieDetail>,
+        _,
+        arg: MovieQuery
+      ) {
+        return {
+          results: response.results,
+          lastPage: response.page,
+          hasMorePages: arg.page < response.total_pages,
+        };
+      },
+      serializeQueryArgs({ endpointName }) {
+        return endpointName;
+      }, // завжди повертатиме один і той же кеш, в іншому випадку будуть створюватися різні кеш-ендпоінти через запити
+      merge(currentCatchData, responseData) {
+        if (responseData.lastPage === 1) {
+          currentCatchData.results = responseData.results;
+        } else {
+          currentCatchData.results.push(...responseData.results);
         }
+        currentCatchData.lastPage = responseData.lastPage;
+        currentCatchData.hasMorePages = responseData.hasMorePages;
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg !== previousArg;
+      },
     }),
     getMovieDetails: builder.query<MovieInfo, string>({
       query(movieId) {
@@ -122,16 +159,22 @@ export const tmdbApi =createApi({
         return path;
       },
     }),
+    getCasts: builder.query<CastInterface[], string>({
+      query:(movieId) => `/movie/${movieId}/credits?api_key=8817625a99e963f36ab0e1c9bab55397`,
+        transformResponse: (response: { cast: CastInterface[] }) =>
+        response.cast,
+    }),
     getKeywords: builder.query<KeywordsItem[], string>({
       query: (query) => `/search/keyword?query=${query}`,
       transformResponse: (response: PageResponse<KeywordsItem>) =>
         response.results,
     }),
     getGenres: builder.query<GenresItem[], void>({
-        query: () => `/genre/movie/list`,
-        transformResponse:((response:{genres:GenresItem[]})=>response.genres)
+      query: () => `/genre/movie/list`,
+      transformResponse: (response: { genres: GenresItem[] }) =>
+        response.genres,
     }),
   }),
 });
 
-export const {useGetFiltrateMoviesQuery,useGetGenresQuery,useGetKeywordsQuery,useGetMovieDetailsQuery } = tmdbApi;
+export const {useGetFiltrateMoviesQuery,useGetGenresQuery,useGetKeywordsQuery,useGetMovieDetailsQuery, useGetCastsQuery } = tmdbApi;

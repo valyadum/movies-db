@@ -8,36 +8,33 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
 import Loader from "./component/Loader/Loader";
 import NotFound from "./component/NotFound/NotFound";
-
-
+import Cast from "./component/Cast/Cast";
 
 const About = lazy(() => import("./component/About/About"));
 const Movies = lazy(() => import("./component/Movies/Movies"));
-const MovieDetails = lazy(() => import("./component/MovieDetails/MovieDetails"));
+const MovieDetails = lazy(
+  () => import("./component/MovieDetails/MovieDetails")
+);
 const Home = lazy(() => import("./component/Home/Home"));
 
 function AppEntrypoint() {
   return (
     <Provider store={store}>
-        <App />
-      </Provider>
+      <App />
+    </Provider>
   );
 }
-
 
 const routes = [
   {
     path: "/",
     element: <AppEntrypoint />,
-    errorElement:<NotFound/>,
+    errorElement: <NotFound />,
     children: [
       {
         index: true,
@@ -70,8 +67,25 @@ const routes = [
             <MovieDetails />
           </Suspense>
         ),
+        children: [
+          {
+            path: "cast",
+            element: (
+              <Suspense fallback={<Loader />}>
+                <Cast />
+              </Suspense>
+            ),
+          },
+          // {
+          //   path: "cast",
+          //   element: (
+          //     <Suspense fallback={<Loader />}>
+          //       <Cast />
+          //     </Suspense>
+          //   ),
+          // },
+        ],
       },
-
     ],
   },
 ];
@@ -82,11 +96,9 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
- 
- <React.StrictMode>
+  <React.StrictMode>
     <RouterProvider router={router} />
- </React.StrictMode>
-
+  </React.StrictMode>
 );
 
 reportWebVitals();

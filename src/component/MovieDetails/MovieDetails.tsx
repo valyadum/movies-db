@@ -28,7 +28,7 @@ import { FaStar } from "react-icons/fa";
 import { IoMdPricetags } from "react-icons/io";
 
 function MovieDetails() {
-  const { movieId, } = useParams();
+  const { movieId} = useParams();
   const location = useLocation();
   const backLink = useRef(location.state?.from ?? "/");
   const { data, isFetching } = useGetMovieDetailsQuery(movieId || "");
@@ -84,21 +84,21 @@ function MovieDetails() {
                     })}
                 </GenresUl>
               </BoxInfo>
-              </InfoContainer>
-              <CastStyle>
-            <Line />
-            <Option>
-              <CastLi>
-                <CastLink to="cast">Cast</CastLink>
-              </CastLi>
-              <CastLi>
-                <CastLink to="reviews">Reviews</CastLink>
-              </CastLi>
-            </Option>
-            <Outlet />
-          </CastStyle>
+            </InfoContainer>
+            <CastStyle>
+              <Line />
+              <Option>
+                <CastLi>
+                  <CastLink to="cast">Cast & Actors</CastLink>
+                  <Outlet />
+                </CastLi>
+                {/* <CastLi>
+                  <CastLink to="reviews">Reviews</CastLink>
+                  <Outlet />
+                </CastLi> */}
+              </Option>
+            </CastStyle>
           </ContainerFilm>
-
         </Container>
       )}
     </Box>
