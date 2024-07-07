@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkmovies_db=self.webpackChunkmovies_db||[]).push([[707],{6707:(e,s,n)=>{n.r(s),n.d(s,{default:()=>c});n(5043);var u=n(579);const c=function(){return(0,u.jsx)("div",{children:"Home"})}}}]);
-//# sourceMappingURL=707.da179812.chunk.js.map
