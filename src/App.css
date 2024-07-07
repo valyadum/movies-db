@@ -34,9 +34,10 @@
   gap: 40px;
 }
 .App-link {
-  color: #61dafb;
   text-decoration: none;
 }
+
+
 .App-main{
   min-height: 98vh;
   max-height: 200vh;;

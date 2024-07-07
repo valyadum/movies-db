@@ -1,8 +1,9 @@
-import { Box } from "@mui/material";
+import { Box, Rating } from "@mui/material";
 import React, {  useRef} from "react";
 import { Outlet, useLocation, useParams } from "react-router-dom";
 import { useGetMovieDetailsQuery } from "../../services/tmbd";
 import Loader from "../Loader/Loader";
+import StarIcon from "@mui/icons-material/Star";
 import {
 
   BoxFilm,
@@ -69,7 +70,17 @@ function MovieDetails() {
                 <Title>{data?.title}</Title>
                 <TextStar>
                   User score: {data?.vote_average}
-                  <FaStar color="gold" size={16} />
+                  <Rating
+                    name="customized-10"
+                    defaultValue={data?.vote_average}
+                    max={10}
+                    readOnly
+                    precision={0.1}
+                    // size="small"
+                    emptyIcon={
+                      <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
+                    }
+                  />
                 </TextStar>
                 {/* <h3>Overview</h3> */}
                 <Text>{data?.overview}</Text>

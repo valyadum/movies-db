@@ -153,6 +153,11 @@ export const tmdbApi = createApi({
         return currentArg !== previousArg;
       },
     }),
+    getFavoriteMovies: builder.query<MovieDetail[], void>({
+      query: () => "/movie/popular?page=1",
+      transformResponse: (response: PageResponse<MovieDetail>) =>
+        response.results,
+    }),
     getMovieDetails: builder.query<MovieInfo, string>({
       query(movieId) {
         const path = `/movie/${movieId}`;
@@ -160,9 +165,9 @@ export const tmdbApi = createApi({
       },
     }),
     getCasts: builder.query<CastInterface[], string>({
-      query:(movieId) => `/movie/${movieId}/credits?api_key=8817625a99e963f36ab0e1c9bab55397`,
-        transformResponse: (response: { cast: CastInterface[] }) =>
-        response.cast,
+      query: (movieId) =>
+        `/movie/${movieId}/credits?api_key=8817625a99e963f36ab0e1c9bab55397`,
+      transformResponse: (response: { cast: CastInterface[] }) => response.cast,
     }),
     getKeywords: builder.query<KeywordsItem[], string>({
       query: (query) => `/search/keyword?query=${query}`,
@@ -177,4 +182,4 @@ export const tmdbApi = createApi({
   }),
 });
 
-export const {useGetFiltrateMoviesQuery,useGetGenresQuery,useGetKeywordsQuery,useGetMovieDetailsQuery, useGetCastsQuery } = tmdbApi;
+export const {useGetFiltrateMoviesQuery,useGetGenresQuery,useGetKeywordsQuery,useGetMovieDetailsQuery, useGetCastsQuery, useGetFavoriteMoviesQuery } = tmdbApi;

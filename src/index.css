@@ -97,7 +97,6 @@ ul {
   list-style: none;
 }
 
-/* tables still need 'cellspacing="0"' in the markup */
 table {
   border-collapse: separate;
   border-spacing: 0;
@@ -120,4 +119,28 @@ q:after {
 blockquote,
 q {
   quotes: """";
+}
+.slide-container{
+  margin: 50px auto;
+  width: 80%;
+ 
+}
+.slide-container img{
+  width: 100%;
+  border-radius: 20px;
+
+}
+.title-container{
+  position: absolute;
+    background: linear-gradient(to bottom, #0c0f21, #00000040);
+    text-align: center;
+    right: 0;
+    width: 100%;
+    z-index: 2;
+    top: 0;
+    color: #fff;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    height: 30px;
+    font-weight: 600;
 }

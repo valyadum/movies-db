@@ -6,7 +6,15 @@ import { AppBar, Box,  createTheme, CssBaseline, Link, ThemeProvider, Toolbar } 
 
 function HeaderLink({children,to}:{children:React.ReactNode,to:string}) {
   return (
-    <Link component={RouterLink} to={to} variant="button" color="inherit" sx={{my:1, mx:1.5}}>
+    <Link
+      component={RouterLink}
+      to={to}
+      variant="button"
+      color="inherit"
+      sx={{ my: 1, mx: 1.5, textDecoration: "none" }}
+      underline="hover"
+      
+    >
       {children}
     </Link>
   );
@@ -28,16 +36,18 @@ function App() {
       <AppBar position="static">
         <Toolbar variant="regular">
           <img src={logo} className="App-logo" alt="logo" />
-          <nav>
-            <HeaderLink to="/">Home</HeaderLink>
+          <nav className="App-link">
+            <HeaderLink  to="/">
+              Home
+            </HeaderLink>
             <HeaderLink to="/movies">Movies</HeaderLink>
             <HeaderLink to="/about">About</HeaderLink>
           </nav>
         </Toolbar>
       </AppBar>
       <Box>
-      <main className="App-main">
-        <Outlet />
+        <main className="App-main">
+          <Outlet />
         </main>
       </Box>
     </ThemeProvider>

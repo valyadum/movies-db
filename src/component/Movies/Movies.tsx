@@ -8,7 +8,7 @@ import { Grid, Typography } from "@mui/material";
 import MoviesFilter, { Filters } from "../MoviesFilter/MoviesFilter";
 import { MovieFilters } from "../../api/tmdb";
 import { MovieQuery, useGetFiltrateMoviesQuery } from "../../services/tmbd";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 
 // interface MoviesProps {
 //   movies: Movie[];

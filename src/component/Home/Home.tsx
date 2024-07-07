@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import SimpleSlider from "./SimpleSlider/SimpleSlider";
 
 function Home() {
   return (
-    <div>Home</div>
-  )
+    <div style={{ height: 500 }}>
+      <SimpleSlider />
+    </div>
+  );
 }
 
-export default Home
+export default Home;
